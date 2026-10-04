@@ -1,0 +1,13 @@
+# Minecraft profile (SniffCraft-Wireshark)
+# Preferences not set here use their default value, capture options included:
+# set the SniffCraft server address again in this profile.
+
+gui.column.format:
+	"No.", "%m",
+	"Time", "%t",
+	"Source", "%s",
+	"Destination", "%d",
+	"Connection", "%Cus:sniffcraft.connection || tcp.stream:0:R",
+	"Packet", "%Cus:minecraft.packet_name:0:R",
+	"Size", "%Cus:sniffcraft.wire_size || minecraft.length:0:R",
+	"Info", "%i"

@@ -16,6 +16,7 @@
 
 #include "sniffcraft/Compression.hpp"
 #include "sniffcraft/conf.hpp"
+#include "sniffcraft/Extcap.hpp"
 #include "sniffcraft/MinecraftProxy.hpp"
 #include "sniffcraft/Logger.hpp"
 #include "sniffcraft/ReplayModLogger.hpp"
@@ -32,6 +33,8 @@ MinecraftProxy::MinecraftProxy(
 {
     connection_state = ConnectionState::Handshake;
     compression_threshold = -1;
+    disconnect_on_version_mismatch = false;
+    rejected_client = false;
 
 #if PROTOCOL_VERSION > 765 /* > 1.20.4 */
     // If it's a version with transfer packet, store the callback
@@ -58,6 +61,7 @@ std::optional<std::string> MinecraftProxy::Start(const std::string& server_addre
         replay_logger = std::make_unique<ReplayModLogger>();
         replay_logger->SetServerName(server_address + ":" + std::to_string(server_port));
     }
+    disconnect_on_version_mismatch = conf.contains(Conf::disconnect_on_version_mismatch_key) && conf[Conf::disconnect_on_version_mismatch_key].get<bool>();
 
 #ifdef USE_ENCRYPTION
     if (conf.contains(Conf::online_key) && conf[Conf::online_key].get<bool>())
@@ -101,6 +105,12 @@ size_t MinecraftProxy::ProcessData(const std::vector<unsigned char>::const_itera
     if (packet_length > max_length)
     {
         return 0;
+    }
+
+    // The client was disconnected for using another game version, drop what it still sends
+    if (rejected_client)
+    {
+        return packet_length + packet_length_length;
     }
 
     size_t remaining_packet_bytes = packet_length;
@@ -199,6 +209,38 @@ size_t MinecraftProxy::Peek(std::vector<unsigned char>::const_iterator& data, si
     }
 }
 
+void MinecraftProxy::DisconnectClient(const std::string& message)
+{
+    std::cout << "Disconnecting client: " << message << std::endl;
+
+    // Written by hand, the login disconnect packet of this build may not match the client version.
+    // It's the same in all versions: id 0 with a json text component, before compression and encryption
+    std::string escaped;
+    for (const char c : message)
+    {
+        if (c == '\n')
+        {
+            escaped += "\\n";
+            continue;
+        }
+        if (c == '"' || c == '\\')
+        {
+            escaped.push_back('\\');
+        }
+        escaped.push_back(c);
+    }
+    std::vector<unsigned char> content;
+    WriteData<VarInt>(0x00, content);
+    WriteData<std::string>("{\"text\":\"" + escaped + "\",\"color\":\"gold\"}", content);
+    std::vector<unsigned char> sized_packet;
+    WriteData<VarInt>(static_cast<int>(content.size()), sized_packet);
+    sized_packet.insert(sized_packet.end(), content.begin(), content.end());
+
+    transmit_original_packet = false;
+    rejected_client = true;
+    client_connection.WriteData(sized_packet.data(), sized_packet.size());
+}
+
 std::vector<unsigned char> MinecraftProxy::PacketToBytes(const Packet& packet) const
 {
     std::vector<unsigned char> content;
@@ -235,6 +277,21 @@ void MinecraftProxy::Handle(ServerboundClientIntentionPacket& packet)
             << packet.GetProtocolVersion() << " VS " << PROTOCOL_VERSION
             << "). Logged packet details may be wrong"
             << std::endl;
+
+        // Server list pings still go through, joining would only give wrongly parsed packets
+        if (disconnect_on_version_mismatch && packet.GetIntention() != 1)
+        {
+            const std::string client_versions = Extcap::GetGameVersionRange(packet.GetProtocolVersion());
+            DisconnectClient(
+                "SniffCraft-Wireshark is set to Minecraft " + Extcap::GetGameVersionRange(PROTOCOL_VERSION) +
+                " but your client uses " + (client_versions == "?" ? "another version" : client_versions) +
+                " (protocol " + std::to_string(packet.GetProtocolVersion()) + ").\n\n" +
+                (client_versions == "?" ?
+                    "This version is not supported yet." :
+                    "Choose it in the Minecraft version option of the SniffCraft capture in Wireshark, then restart the capture.")
+            );
+            return;
+        }
     }
 
 #if PROTOCOL_VERSION > 765 /* > 1.20.4 */

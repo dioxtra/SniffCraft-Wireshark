@@ -45,6 +45,8 @@ private:
     /// @param packet Packet to convert
     /// @return Bytes representation of the packet
     std::vector<unsigned char> PacketToBytes(const ProtocolCraft::Packet& packet) const;
+    /// @brief Send a login disconnect message to the client and drop the connection
+    void DisconnectClient(const std::string& message);
 
     virtual void Handle(ProtocolCraft::ServerboundClientIntentionPacket& packet) override;
     virtual void Handle(ProtocolCraft::ServerboundHelloPacket& packet) override;
@@ -92,6 +94,10 @@ private:
     ProtocolCraft::ConnectionState connection_state;
     bool transmit_original_packet;
     int compression_threshold;
+    // Refuse clients of another game version instead of logging garbage
+    bool disconnect_on_version_mismatch;
+    // The client was disconnected, what it still sends is dropped
+    bool rejected_client;
 #ifdef USE_ENCRYPTION
     std::unique_ptr<Botcraft::Authentifier> authentifier;
 #if PROTOCOL_VERSION > 760 /* > 1.19.1/2 */

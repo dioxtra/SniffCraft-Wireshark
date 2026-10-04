@@ -1,7 +1,8 @@
 [![Build status](https://github.com/dioxtra/SniffCraft-Wireshark/actions/workflows/automatic_release.yml/badge.svg)](https://github.com/dioxtra/SniffCraft-Wireshark/actions/workflows/automatic_release.yml)
 [![Download](https://img.shields.io/badge/download-latest%20release-blue)](https://github.com/dioxtra/SniffCraft-Wireshark/releases/tag/latest)
 [![Minecraft](https://img.shields.io/badge/Minecraft-1.8%20%E2%86%92%2026.3-62B47A)](#choosing-the-minecraft-version)
-[![Wireshark](https://img.shields.io/badge/Wireshark-4.3%2B-1679A7)](https://www.wireshark.org/)
+[![Wireshark](https://img.shields.io/badge/Wireshark-4.4%2B-1679A7)](#quick-start)
+[![Dissector tests](https://github.com/dioxtra/SniffCraft-Wireshark/actions/workflows/tests.yml/badge.svg)](https://github.com/dioxtra/SniffCraft-Wireshark/actions/workflows/tests.yml)
 [![License](https://img.shields.io/badge/license-GPL--3.0-lightgrey)](LICENSE)
 
 # SniffCraft-Wireshark
@@ -32,25 +33,34 @@ This is a fork of [SniffCraft](https://github.com/adepierre/SniffCraft) by [adep
 - **28 Minecraft versions in one install**, from 1.8.9 to 26.3, chosen in the capture options
 - **Online-mode servers** work: SniffCraft logs in with your Microsoft account, so even encrypted traffic is readable
 - **Every field decoded** and filterable (``sniffcraft.field contains "diamond"``), with the matching bytes highlighted in the packet bytes pane
+- **Readable Info column**: chat messages, commands, coordinates, disconnect reasons and player names are shown next to the packet name (``System Chat: <Steve> hello``)
 - **A second, independent parser** based on [minecraft-data](https://github.com/PrismarineJS/minecraft-data) shown next to SniffCraft's, which also decodes raw TCP captures of offline-mode and LAN servers without any proxy
+- **A Minecraft profile** for Wireshark with packet name columns, coloring rules and one click filters (chat, no noise, login, chunks...)
 - **``.pcapng`` export** of SniffCraft sessions, to share them or open them later
-- Packets SniffCraft fails to parse are kept with their raw bytes instead of being dropped
+- Packets SniffCraft fails to parse are kept with their raw bytes instead of being dropped, and a client using another Minecraft version than the selected one gets a clear message instead of garbled packets
 
 ![Every packet containing "diamond": recipes with their nested ingredients, and the matching bytes](docs/wireshark-fields.png)
 
 ## Quick start
 
+You need **Wireshark 4.4 or newer** (``Help > About Wireshark``), older versions can't load the dissectors.
+
 ### Windows
 
 1. Download ``sniffcraft-wireshark-windows.zip`` from the [latest release](https://github.com/dioxtra/SniffCraft-Wireshark/releases/tag/latest) and extract it.
-2. Run ``install.ps1`` (right click > *Run with PowerShell*, or ``powershell -ExecutionPolicy Bypass -File install.ps1``). It copies SniffCraft to your personal Wireshark extcap folder and the dissectors to your personal Lua plugins folder.
+2. Run ``install.ps1`` (right click > *Run with PowerShell*, or ``powershell -ExecutionPolicy Bypass -File install.ps1``). It copies SniffCraft to your personal Wireshark extcap folder, the dissectors to your personal Lua plugins folder and adds the *Minecraft* configuration profile.
 3. Restart Wireshark, click on the gear icon next to **SniffCraft Minecraft proxy**, choose your Minecraft version and the server address, then start the capture and connect your client to ``localhost:25555``.
 
-### Linux and other platforms
+### Linux
 
-Download ``sniffcraft-wireshark-linux.zip`` (Linux) or ``sniffcraft-wireshark.zip`` (dissectors only, with the SniffCraft binary of your platform from the same release) and copy the files in the folders listed in Wireshark ``Help > About Wireshark > Folders``:
-- ``sniffcraft`` and the ``sniffcraft_versions`` folder go in *Personal Extcap path*
-- ``sniffcraft.lua``, ``minecraft.lua`` and the ``minecraft_mcdata`` folder go in *Personal Lua Plugins*
+1. Download ``sniffcraft-wireshark-linux.zip`` from the [latest release](https://github.com/dioxtra/SniffCraft-Wireshark/releases/tag/latest), extract it and run ``./install.sh``.
+2. Same as step 3 on Windows.
+
+Some distributions ship an older Wireshark: on Ubuntu 24.04 and older, get the current one from the Wireshark team PPA with ``sudo add-apt-repository ppa:wireshark-dev/stable && sudo apt install wireshark``. The Flatpak version uses other folders, see ``./install.sh --help``.
+
+### Other platforms
+
+``sniffcraft-wireshark.zip`` only contains the dissectors and the profile. Install them with ``install.sh`` (macOS) or ``install.ps1``, and use ``--exe`` / ``-SniffcraftExe`` to also install a SniffCraft binary of the same release for the live capture. The folders Wireshark uses are listed in ``Help > About Wireshark > Folders``.
 
 ## Usage
 
@@ -76,6 +86,17 @@ The credentials are cached next to it and reused by every capture. Your client c
 
 SniffCraft is compiled for one protocol version at a time. The version list contains the version of the ``sniffcraft`` executable in the extcap folder plus every ``sniffcraft-<version>`` build of the ``sniffcraft_versions`` folder next to it. Each build covers all the game versions sharing its protocol, for example the 1.21.10 build also works with 1.21.9. Pick the version of your client: on servers translating between versions (ViaVersion), that is the one that matters.
 
+If the client uses another version, the live capture refuses the connection and the client shows which version to choose instead. The handshake is still captured, with a *WRONG VERSION* error in Wireshark. Standalone SniffCraft only prints a warning, unless ``DisconnectOnVersionMismatch`` is true in its conf file.
+
+### Minecraft profile
+
+The installers add a *Minecraft* configuration profile: select it in the bottom right corner of the Wireshark window (or ``Edit > Configuration Profiles``). It adds:
+- **Columns**: connection, packet name and size on the wire, next to the Info column
+- **Colors**: chat in green, disconnections in red, login and configuration in blue, chunks in yellow, movement and keep alive packets in gray, problems in dark red
+- **Filter buttons** above the packet list: *Chat*, *No noise*, *Login*, *Chunks*, *Entities*, *Plugin channels* and *Problems*
+
+Wireshark saves the capture options in each profile, so set the SniffCraft server address once more after switching to it.
+
 ### Capture files
 
 Set ``LogToPcapng`` to true in the SniffCraft conf file to also save each session in a ``XXXX.pcapng`` file. ``PcapngIncludeJson`` adds the full json of each packet (bigger files, enables ``json.*`` filters) and ``PcapngRespectFilters`` applies the ignored lists of the conf file to the capture (by default every packet is saved and filtering is done in Wireshark). The live capture has the same options.
@@ -90,7 +111,10 @@ sniffcraft.field.path == "change.position[0]"
 sniffcraft.field contains "diamond"
 sniffcraft.flags.parse_error == True
 minecraft.packet_name == "map_chunk"
+minecraft.summary contains "joined the game"
 ```
+
+``minecraft.summary`` is the text added to the Info column: chat messages as players see them, commands, coordinates, disconnect reasons, plugin channel names...
 
 Movement, entity and chunk packets are most of the traffic, hiding them makes the interesting ones stand out:
 
@@ -126,8 +150,11 @@ cmake --build build --config Release
 
 Then:
 - ``python tools/build_versions.py`` builds SniffCraft for all the supported versions in ``dist/sniffcraft_versions`` (or only the versions given as arguments, about two minutes each)
-- ``powershell -ExecutionPolicy Bypass -File wireshark\install.ps1`` installs ``bin\sniffcraft.exe``, these builds and the dissectors
+- ``powershell -ExecutionPolicy Bypass -File wireshark\install.ps1`` (or ``wireshark/install.sh``) installs ``bin/sniffcraft``, these builds, the dissectors and the profile
 - ``python tools/gen_mcdata.py --ref master`` regenerates the minecraft-data definitions, for example after a new Minecraft release
+- ``python tests/run_tests.py`` checks the dissectors against the captures of ``tests/captures`` (``--update`` writes the new expected output after a wanted change)
+
+A weekly workflow opens an issue when [upstream SniffCraft](https://github.com/adepierre/SniffCraft) has new commits or when minecraft-data has new protocol definitions (regenerated and tested in the ``auto/minecraft-data`` branch).
 
 Bug reports and ideas about the Wireshark integration are welcome in the [issues](https://github.com/dioxtra/SniffCraft-Wireshark/issues) of this repository.
 

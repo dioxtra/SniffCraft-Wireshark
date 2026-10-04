@@ -1,0 +1,100 @@
+1	C → S [Handshake] Client Intention: protocol 773 (1.21.9 - 1.21.10), 127.0.0.1:25565, login	
+2	C → S [Handshake] Client Intention: protocol 773 (1.21.9 - 1.21.10), localhost:25555, login	
+3	C → S [Login] Hello: SniffBot	
+4	S → C [Login] Login Compression: threshold 256	
+5	S → C [Login] Login Finished: SniffBot	
+6	C → S [Login] Login Acknowledged	
+7	C → S [Configuration] Custom Payload (Configuration)|minecraft:brand: minecraft:brand	
+8	S → C [Configuration] Custom Payload (Configuration)|minecraft:brand: minecraft:brand	
+9	S → C [Configuration] Update Enabled Features	
+10	S → C [Configuration] Select Known Packs	
+11	C → S [Configuration] Select Known Packs	
+12	S → C [Configuration] Registry Data	
+13	S → C [Configuration] Registry Data	
+14	S → C [Configuration] Registry Data	
+15	S → C [Configuration] Registry Data	
+16	S → C [Configuration] Registry Data	
+17	S → C [Configuration] Registry Data	
+18	S → C [Configuration] Registry Data	
+19	S → C [Configuration] Registry Data	
+20	S → C [Configuration] Registry Data	
+21	S → C [Configuration] Finish Configuration	
+22	C → S [Configuration] Finish Configuration	
+23	S → C [Play] Login	
+24	S → C [Play] Change Difficulty	
+25	S → C [Play] Player Abilities	
+26	S → C [Play] Set Held Slot	
+27	S → C [Play] Entity Event	
+28	S → C [Play] Commands	
+29	S → C [Play] Recipe Book Settings	
+30	S → C [Play] Recipe Book Add	
+31	S → C [Play] Player Position: 6.5 -60 4.5	
+32	S → C [Play] Server Data	
+33	S → C [Play] Player Info Update	
+34	S → C [Play] Player Info Update	
+35	S → C [Play] Initialize Border	
+36	S → C [Play] Set Time	
+37	S → C [Play] Set Default Spawn Position	
+38	S → C [Play] Game Event	
+39	S → C [Play] Ticking State	
+40	S → C [Play] Ticking Step	
+41	S → C [Play] Set Chunk Cache Center	
+42	S → C [Play] Container Set Content	
+43	C → S [Play] Accept Teleportation	
+44	C → S [Play] Player Loaded	
+45	C → S [Play] Chat Command: /help	
+46	S → C [Play] Set Entity Data	
+47	S → C [Play] Update Attributes	
+48	S → C [Play] Update Advancements	
+49	S → C [Play] Set Health	
+50	S → C [Play] Set Experience	
+51	S → C [Play] Chunk Batch Start	
+52	S → C [Play] Chunk Batch Finished	
+53	S → C [Play] System Chat: /me <action>	
+54	S → C [Play] System Chat: /help [<command>]	
+55	S → C [Play] System Chat: /list [uuids]	
+56	S → C [Play] System Chat: /msg <targets> <message>	
+57	S → C [Play] System Chat: /tell -> msg	
+58	S → C [Play] System Chat: /w -> msg	
+59	S → C [Play] System Chat: /random (value|roll)	
+60	S → C [Play] System Chat: /teammsg <message>	
+61	S → C [Play] System Chat: /tm -> teammsg	
+62	S → C [Play] System Chat: /trigger <objective> [add|set]	
+63	C → S [Play] Chunk Batch Received	
+64	S → C [Play] Chunk Batch Start	
+65	S → C [Play] Chunk Batch Finished	
+66	C → S [Play] Chunk Batch Received	
+67	S → C [Play] Chunk Batch Start	
+68	S → C [Play] Chunk Batch Finished	
+69	C → S [Play] Chunk Batch Received	
+70	S → C [Play] Chunk Batch Start	
+71	S → C [Play] Chunk Batch Finished	
+72	C → S [Play] Chunk Batch Received	
+73	S → C [Play] Set Time	
+74	S → C [Play] Bundle	
+75	S → C [Play] Add Entity: 30.5 -60 -15.5	
+76	S → C [Play] Update Attributes	
+77	S → C [Play] Bundle	
+78	S → C [Play] Move Entity Pos	
+79	S → C [Play] Set Entity Data	
+80	S → C [Play] Update Attributes	
+81	S → C [Play] Set Entity Motion	
+82	S → C [Play] Entity Position Sync: 30.47302 -60 -15.50304	
+83	S → C [Play] Rotate Head	
+84	S → C [Play] Set Entity Motion	
+85	S → C [Play] Entity Position Sync: 30.44475 -59.58 -15.41596	
+86	S → C [Play] Rotate Head	
+87	S → C [Play] Set Entity Motion	
+88	S → C [Play] Move Entity PosRot	
+89	S → C [Play] Rotate Head	
+90	S → C [Play] Set Entity Motion	
+91	S → C [Play] Move Entity Pos	
+92	S → C [Play] Set Time	
+93	S → C [Play] Bundle	
+94	S → C [Play] Add Entity: 30.5 -60 -11.5	
+95	S → C [Play] Set Entity Data	
+96	S → C [Play] Update Attributes	
+97	S → C [Play] Bundle	
+98	S → C [Play] Move Entity Pos	
+99	S → C [Play] Set Entity Data	
+100	S → C [Play] Update Attributes	

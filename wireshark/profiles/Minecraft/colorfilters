@@ -1,0 +1,9 @@
+# Minecraft profile coloring rules (SniffCraft-Wireshark), the first matching rule wins
+# @name@filter@[background r,g,b][foreground r,g,b] with 16 bit color components
+@Minecraft problems@_ws.expert.severity >= warning || _ws.malformed || sniffcraft.flags.parse_error == True@[45232,0,8224][65535,65535,65535]
+@Minecraft disconnect@minecraft.packet_name in {"disconnect", "kick_disconnect"}@[65535,51143,52942][4718,10030,11796]
+@Minecraft chat@minecraft.packet_name in {"system_chat", "player_chat", "profileless_chat", "disguised_chat", "chat", "chat_message", "chat_command", "chat_command_signed", "action_bar", "set_title_text", "set_title_subtitle"}@[50886,61423,52942][4718,10030,11796]
+@Minecraft encrypted@minecraft.encrypted@[55769,55769,55769][22873,22873,22873]
+@Minecraft handshake, login and configuration@minecraft.state in {0, 1, 2, 4} || sniffcraft.state in {0, 1, 2, 4}@[56797,60395,63479][4718,10030,11796]
+@Minecraft chunks@minecraft.packet_name in {"map_chunk", "map_chunk_bulk", "unload_chunk", "update_light", "chunk_batch_start", "chunk_batch_finished", "chunk_batch_received", "chunk_biomes", "multi_block_change", "block_change"}@[65535,62194,52428][4718,10030,11796]
+@Minecraft movement and keep alive@minecraft.packet_name in {"keep_alive", "ping", "pong", "ping_request", "ping_response", "update_time", "tick_end", "bundle_delimiter", "flying", "position", "position_look", "look", "vehicle_move", "rel_entity_move", "entity_move_look", "entity_look", "entity_head_rotation", "entity_velocity", "entity_teleport", "sync_entity_position", "entity_update_attributes", "update_attributes"}@[65535,65535,65535][32896,32896,32896]

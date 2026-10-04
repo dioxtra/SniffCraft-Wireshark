@@ -1,0 +1,88 @@
+1	C → S [Handshake] Client Intention: protocol 340 (1.12.2), 127.0.0.1:25565, login	
+2	C → S [Handshake] Client Intention: protocol 340 (1.12.2), localhost:25555, login	
+3	C → S [Login] Hello: SniffBot	
+4	S → C [Login] Login Compression: threshold 256	
+5	S → C [Login] Game Profile: SniffBot	
+6	S → C [Play] Login	
+7	S → C [Play] Custom Payload|MC|Brand: MC|Brand	
+8	S → C [Play] Change Difficulty	
+9	S → C [Play] Player Abilities	
+10	S → C [Play] Set Carried Item	
+11	S → C [Play] Entity Event	
+12	S → C [Play] Recipe	
+13	S → C [Play] Player Info	
+14	S → C [Play] Player Info	
+15	S → C [Play] Player Position: 589.5 4 -131.5	
+16	C → S [Play] Accept Teleportation	
+17	C → S [Play] Chat: /help	
+18	S → C [Play] Set Border	
+19	S → C [Play] Set Time	
+20	S → C [Play] Set Default Spawn Position: -794 4 -152	
+21	S → C [Play] Container Set Content	
+22	S → C [Play] Container Set Slot	
+23	S → C [Play] Chat: commands.help.header [1, 1]	
+24	S → C [Play] Chat: commands.help.usage	
+25	S → C [Play] Chat: commands.me.usage	
+26	S → C [Play] Chat: commands.message.usage	
+27	S → C [Play] Chat: commands.trigger.usage	
+28	S → C [Play] Chat: commands.help.footer	
+29	S → C [Play] Level Chunk	
+30	S → C [Play] Set Entity Data	
+31	S → C [Play] Update Attributes	
+32	S → C [Play] Set Health	
+33	S → C [Play] Set Experience	
+34	S → C [Play] Keep Alive	
+35	C → S [Play] Keep Alive	
+36	S → C [Play] Level Chunk	
+37	S → C [Play] Level Chunk	
+38	S → C [Play] Level Chunk	
+39	S → C [Play] Level Chunk	
+40	S → C [Play] Level Chunk	
+41	S → C [Play] Level Chunk	
+42	S → C [Play] Level Chunk	
+43	S → C [Play] Level Chunk	
+44	S → C [Play] Level Chunk	
+45	S → C [Play] Level Chunk	
+46	S → C [Play] Level Chunk	
+47	S → C [Play] Level Chunk	
+48	S → C [Play] Level Chunk	
+49	S → C [Play] Level Chunk	
+50	S → C [Play] Level Chunk	
+51	S → C [Play] Level Chunk	
+52	S → C [Play] Level Chunk	
+53	S → C [Play] Level Chunk	
+54	S → C [Play] Level Chunk	
+55	S → C [Play] Level Chunk	
+56	S → C [Play] Level Chunk	
+57	S → C [Play] Level Chunk	
+58	S → C [Play] Level Chunk	
+59	S → C [Play] Level Chunk	
+60	S → C [Play] Level Chunk	
+61	S → C [Play] Level Chunk	
+62	S → C [Play] Level Chunk	
+63	S → C [Play] Level Chunk	
+64	S → C [Play] Level Chunk	
+65	S → C [Play] Level Chunk	
+66	S → C [Play] Level Chunk	
+67	S → C [Play] Level Chunk	
+68	S → C [Play] Level Chunk	
+69	S → C [Play] Level Chunk	
+70	S → C [Play] Level Chunk	
+71	S → C [Play] Level Chunk	
+72	S → C [Play] Level Chunk	
+73	S → C [Play] Level Chunk	
+74	S → C [Play] Level Chunk	
+75	S → C [Play] Level Chunk	
+76	S → C [Play] Level Chunk	
+77	S → C [Play] Level Chunk	
+78	S → C [Play] Level Chunk	
+79	S → C [Play] Level Chunk	
+80	S → C [Play] Level Chunk	
+81	S → C [Play] Level Chunk	
+82	S → C [Play] Level Chunk	
+83	S → C [Play] Level Chunk	
+84	S → C [Play] Set Time	
+85	S → C [Play] Set Time	
+86	S → C [Play] Set Time	
+87	S → C [Play] Set Time	
+88	S → C [Play] Set Time	

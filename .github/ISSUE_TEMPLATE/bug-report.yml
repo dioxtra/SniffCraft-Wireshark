@@ -1,0 +1,73 @@
+name: Bug report
+description: Something doesn't work in the Wireshark capture, the dissectors or SniffCraft
+labels: ["bug"]
+
+body:
+- type: markdown
+  attributes:
+    value: |
+      Captures contain your username, chat messages and the server address, have a look before attaching one.
+      Never attach ``botcraft_cached_credentials.json``.
+
+- type: textarea
+  id: problem
+  attributes:
+    label: What happened?
+    description: What you did, what you expected and what you got instead (error messages, screenshots...)
+  validations:
+    required: true
+
+- type: dropdown
+  id: mode
+  attributes:
+    label: How do you capture?
+    options:
+      - Live capture (SniffCraft interface in Wireshark)
+      - Capture file written by SniffCraft (LogToPcapng)
+      - Raw TCP capture (minecraft.lua only)
+      - Standalone SniffCraft (no Wireshark)
+  validations:
+    required: true
+
+- type: input
+  id: wireshark
+  attributes:
+    label: Wireshark version
+    description: First line of Help > About Wireshark
+    placeholder: Wireshark 4.6.3
+  validations:
+    required: true
+
+- type: input
+  id: os
+  attributes:
+    label: Operating system
+    placeholder: Windows 11, Ubuntu 24.04...
+  validations:
+    required: true
+
+- type: input
+  id: minecraft
+  attributes:
+    label: Minecraft versions
+    description: Client version, server version (and software, like Paper or Velocity) and the version chosen in the capture options
+    placeholder: client 1.21.10, Paper 1.21.10, capture option 1.21.10
+  validations:
+    required: true
+
+- type: dropdown
+  id: online
+  attributes:
+    label: Online mode
+    options:
+      - "No"
+      - "Yes"
+
+- type: textarea
+  id: log
+  attributes:
+    label: SniffCraft log
+    description: |
+      For live captures, the end of ``sniffcraft_extcap.log`` in the Wireshark extcap folder
+      (``%APPDATA%\Wireshark\extcap`` on Windows, ``~/.local/lib/wireshark/extcap`` on Linux).
+    render: text

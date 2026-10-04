@@ -1,0 +1,38 @@
+1	C → S [Handshake] Client Intention: protocol 47 (1.8 - 1.8.9), 127.0.0.1:25565, login	
+2	C → S [Handshake] Client Intention: protocol 47 (1.8 - 1.8.9), localhost:25555, login	
+3	C → S [Login] Hello: SniffBot	
+4	S → C [Login] Login Compression: threshold 256	
+5	S → C [Login] Game Profile: SniffBot	
+6	S → C [Play] Login	
+7	S → C [Play] Custom Payload|MC|Brand: MC|Brand	
+8	S → C [Play] Change Difficulty	
+9	S → C [Play] Set Default Spawn Position: 546 4 876	
+10	S → C [Play] Player Abilities	
+11	S → C [Play] Set Carried Item	
+12	S → C [Play] Award Stats	
+13	S → C [Play] Player Info	
+14	S → C [Play] Player Info	
+15	S → C [Play] Player Position: 503.5 4 113.5	
+16	C → S [Play] Chat: /help	
+17	S → C [Play] Set Border	
+18	S → C [Play] Set Time	
+19	S → C [Play] Container Set Content	
+20	S → C [Play] Container Set Slot	
+21	S → C [Play] Chat: commands.help.header [1, 1]	
+22	S → C [Play] Chat: commands.help.usage	
+23	S → C [Play] Chat: commands.me.usage	
+24	S → C [Play] Chat: commands.message.usage	
+25	S → C [Play] Chat: commands.trigger.usage	
+26	S → C [Play] Chat: commands.help.footer	
+27	S → C [Play] Set Entity Data	
+28	S → C [Play] Update Attributes	
+29	S → C [Play] Set Time	
+30	S → C [Play] Set Time	
+31	S → C [Play] Keep Alive	
+32	C → S [Play] Keep Alive	
+33	S → C [Play] Set Time	
+34	S → C [Play] Set Time	
+35	S → C [Play] Keep Alive	
+36	C → S [Play] Keep Alive	
+37	S → C [Play] Set Time	
+38	S → C [Play] Set Time	

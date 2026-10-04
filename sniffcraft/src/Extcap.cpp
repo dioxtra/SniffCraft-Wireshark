@@ -270,24 +270,6 @@ namespace Extcap
             return versions;
         }
 
-        /// @brief "1.21.9 - 1.21.10" for all the game versions using this protocol version
-        std::string GetGameVersionRange(const int protocol_version)
-        {
-            std::vector<std::string> game_versions;
-            for (const auto& [game_version, protocol] : GetVersionTable())
-            {
-                if (protocol == protocol_version)
-                {
-                    game_versions.push_back(game_version);
-                }
-            }
-            if (game_versions.empty())
-            {
-                return "?";
-            }
-            return game_versions.size() == 1 ? game_versions.front() : game_versions.front() + " - " + game_versions.back();
-        }
-
 #ifdef _WIN32
         /// @brief Quote an argument following CommandLineToArgvW rules
         std::wstring QuoteArgument(const std::wstring& arg)
@@ -500,7 +482,9 @@ namespace Extcap
                 { Conf::network_recap_to_console_key, false },
                 { Conf::pcapng_log_key, true },
                 { Conf::pcapng_json_key, options.include_json },
-                { Conf::pcapng_respect_filters_key, options.respect_filters }
+                { Conf::pcapng_respect_filters_key, options.respect_filters },
+                // Logs are hidden in extcap mode, tell the user in game instead
+                { Conf::disconnect_on_version_mismatch_key, true }
             };
             if (!options.file_logs)
             {
@@ -552,6 +536,23 @@ namespace Extcap
             // Proxies are blocked in asio calls, there is no clean way to stop them from here
             std::_Exit(server_stopped ? 1 : 0);
         }
+    }
+
+    std::string GetGameVersionRange(const int protocol_version)
+    {
+        std::vector<std::string> game_versions;
+        for (const auto& [game_version, protocol] : GetVersionTable())
+        {
+            if (protocol == protocol_version)
+            {
+                game_versions.push_back(game_version);
+            }
+        }
+        if (game_versions.empty())
+        {
+            return "?";
+        }
+        return game_versions.size() == 1 ? game_versions.front() : game_versions.front() + " - " + game_versions.back();
     }
 
     bool IsExtcapCall(const int argc, char* argv[])

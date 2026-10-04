@@ -27,6 +27,20 @@
 --                      start u32, end u32 (byte range in raw, 0xFFFFFFFF if unknown) }
 --   json           u32 length + utf8 (optional ProtocolCraft json, length 0 if absent)
 
+-- This file only uses Lua 5.2 syntax so it can explain why minecraft.lua doesn't load on old versions
+if _VERSION == "Lua 5.1" or _VERSION == "Lua 5.2" then
+    report_failure("The SniffCraft Minecraft dissectors need Wireshark 4.4 or newer, this Wireshark ("
+        .. get_version() .. ") uses " .. _VERSION .. ".\nSee https://github.com/dioxtra/SniffCraft-Wireshark#quick-start")
+    return
+end
+
+set_plugin_info({
+    version = "1.0.0",
+    description = "Minecraft packets captured by SniffCraft",
+    author = "SniffCraft-Wireshark contributors",
+    repository = "https://github.com/dioxtra/SniffCraft-Wireshark",
+})
+
 local sniffcraft = Proto("sniffcraft", "SniffCraft Minecraft")
 
 local origins = {
@@ -81,7 +95,9 @@ local ef_parse_error = ProtoExpert.new("sniffcraft.parse_error.expert", "SniffCr
     expert.group.MALFORMED, expert.severity.WARN)
 local ef_bad_record = ProtoExpert.new("sniffcraft.bad_record", "Invalid SniffCraft record",
     expert.group.MALFORMED, expert.severity.ERROR)
-sniffcraft.experts = { ef_parse_error, ef_bad_record }
+local ef_version_mismatch = ProtoExpert.new("sniffcraft.version_mismatch", "The client and SniffCraft use different Minecraft versions",
+    expert.group.PROTOCOL, expert.severity.ERROR)
+sniffcraft.experts = { ef_parse_error, ef_bad_record, ef_version_mismatch }
 
 local json_dissector = Dissector.get("json")
 
@@ -206,8 +222,22 @@ function sniffcraft.dissector(tvb, pinfo, tree)
         offset = add_fields(tvb, offset, field_count, packet_tree, raw_tvb)
 
         -- Native parsing of the raw bytes (minecraft.lua), when installed
-        if raw_tvb ~= nil and _G.minecraft_native ~= nil then
-            _G.minecraft_native.dissect_packet(raw_tvb, pinfo, tree, protocol_version, state, clientbound)
+        local native = _G.minecraft_native
+        local summary, mismatch = nil, nil
+        if raw_tvb ~= nil and native ~= nil then
+            local _, values
+            _, values, summary = native.dissect_packet(raw_tvb, pinfo, tree, protocol_version, state, clientbound)
+            -- The handshake is the only packet with the client protocol version
+            if state == 0 and type(values) == "table" and type(values.protocolVersion) == "number"
+                and values.protocolVersion ~= protocol_version then
+                local function describe(protocol)
+                    local versions = native.version_name and native.version_name(protocol)
+                    return (versions or "?") .. " (protocol " .. protocol .. ")"
+                end
+                mismatch = string.format("The client uses Minecraft %s but SniffCraft is set to %s, choose the client version "
+                    .. "in the SniffCraft capture options", describe(values.protocolVersion), describe(protocol_version))
+                subtree:add_proto_expert_info(ef_version_mismatch, mismatch)
+            end
         end
 
         local json_len = tvb(offset, 4):uint()
@@ -226,8 +256,14 @@ function sniffcraft.dissector(tvb, pinfo, tree)
         pinfo.cols.protocol:set("Minecraft")
         pinfo.cols.src:set(endpoints[1])
         pinfo.cols.dst:set(endpoints[2])
-        pinfo.cols.info:set(string.format("%s [%s] %s", clientbound and "S → C" or "C → S", state_name,
-            name ~= "" and name or string.format("UNPARSED id=0x%02X", packet_id)))
+        local info = string.format("%s [%s] %s", clientbound and "S → C" or "C → S", state_name,
+            name ~= "" and name or string.format("UNPARSED id=0x%02X", packet_id))
+        if mismatch ~= nil then
+            info = info .. " - WRONG VERSION: " .. mismatch
+        elseif summary ~= nil then
+            info = info .. ": " .. summary
+        end
+        pinfo.cols.info:set(info)
     end)
     if not ok then
         subtree:add_proto_expert_info(ef_bad_record, tostring(err))

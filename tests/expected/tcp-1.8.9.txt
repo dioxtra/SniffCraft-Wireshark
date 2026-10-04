@@ -1,0 +1,48 @@
+4	C → S [Handshake] set_protocol: protocol 47 (1.8 - 1.8.9), localhost:25565, login	
+6	C → S [Login] login_start: SniffBot	
+8	S → C [Login] compress: threshold 256	
+10	S → C [Login] success: SniffBot	
+12	S → C [Play] login	
+14	S → C [Play] custom_payload: MC|Brand	
+16	S → C [Play] difficulty	
+18	S → C [Play] spawn_position: 500 4 109	
+20	S → C [Play] abilities	
+22	S → C [Play] held_item_slot	
+24	S → C [Play] statistics	
+26	S → C [Play] player_info	
+28	S → C [Play] player_info	
+30	S → C [Play] position: 503.5 4 113.5	
+32	C → S [Play] chat: /help	
+34	S → C [Play] world_border	
+36	S → C [Play] update_time	
+38	S → C [Play] window_items	
+40	S → C [Play] set_slot	
+42	S → C [Play] chat: commands.help.header [1, 1]	
+44	S → C [Play] chat: commands.help.usage	
+46	S → C [Play] chat: commands.me.usage	
+48	S → C [Play] chat: commands.message.usage	
+50	S → C [Play] chat: commands.trigger.usage	
+52	S → C [Play] chat: commands.help.footer	
+54	S → C [Play] map_chunk_bulk	
+56	S → C [Play] entity_metadata	
+58	S → C [Play] update_attributes	
+60	S → C [Play] map_chunk_bulk	
+62	S → C [Play] map_chunk_bulk	
+64	S → C [Play] map_chunk_bulk	
+66	S → C [Play] update_time	
+68	S → C [Play] map_chunk_bulk	
+70	S → C [Play] map_chunk_bulk	
+72	S → C [Play] map_chunk_bulk	
+74	S → C [Play] map_chunk_bulk	
+76	S → C [Play] map_chunk	
+78	S → C [Play] update_time	
+80	S → C [Play] keep_alive	
+82	C → S [Play] keep_alive	
+84	S → C [Play] update_time	
+86	S → C [Play] update_time	
+88	S → C [Play] keep_alive	
+90	C → S [Play] keep_alive	
+92	S → C [Play] update_time	
+94	S → C [Play] update_time	
+96	S → C [Play] keep_alive	
+98	C → S [Play] keep_alive	

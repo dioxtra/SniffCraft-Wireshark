@@ -1,0 +1,100 @@
+1	C → S [Handshake] Client Intention: protocol 754 (1.16.4 - 1.16.5), 127.0.0.1:25565, login	
+2	C → S [Handshake] Client Intention: protocol 754 (1.16.4 - 1.16.5), localhost:25555, login	
+3	C → S [Login] Hello: SniffBot	
+4	S → C [Login] Login Compression: threshold 256	
+5	S → C [Login] Game Profile: SniffBot	
+6	S → C [Play] Custom Payload|minecraft:brand: minecraft:brand	
+7	S → C [Play] Change Difficulty	
+8	S → C [Play] Player Abilities	
+9	S → C [Play] Set Carried Item	
+10	S → C [Play] Entity Event	
+11	S → C [Play] Commands	
+12	S → C [Play] Recipe	
+13	S → C [Play] Player Position: -11.5 4 -87.5	
+14	C → S [Play] Accept Teleportation	
+15	C → S [Play] Chat: /help	
+16	S → C [Play] Player Info	
+17	S → C [Play] Player Info	
+18	S → C [Play] Set Chunk Cache Center	
+19	S → C [Play] Light Update	
+20	S → C [Play] Light Update	
+21	S → C [Play] Light Update	
+22	S → C [Play] Light Update	
+23	S → C [Play] Light Update	
+24	S → C [Play] Light Update	
+25	S → C [Play] Light Update	
+26	S → C [Play] Light Update	
+27	S → C [Play] Light Update	
+28	S → C [Play] Light Update	
+29	S → C [Play] Light Update	
+30	S → C [Play] Light Update	
+31	S → C [Play] Light Update	
+32	S → C [Play] Light Update	
+33	S → C [Play] Light Update	
+34	S → C [Play] Light Update	
+35	S → C [Play] Light Update	
+36	S → C [Play] Light Update	
+37	S → C [Play] Light Update	
+38	S → C [Play] Light Update	
+39	S → C [Play] Light Update	
+40	S → C [Play] Light Update	
+41	S → C [Play] Light Update	
+42	S → C [Play] Light Update	
+43	S → C [Play] Light Update	
+44	S → C [Play] Light Update	
+45	S → C [Play] Light Update	
+46	S → C [Play] Light Update	
+47	S → C [Play] Light Update	
+48	S → C [Play] Light Update	
+49	S → C [Play] Light Update	
+50	S → C [Play] Light Update	
+51	S → C [Play] Light Update	
+52	S → C [Play] Light Update	
+53	S → C [Play] Light Update	
+54	S → C [Play] Light Update	
+55	S → C [Play] Light Update	
+56	S → C [Play] Light Update	
+57	S → C [Play] Light Update	
+58	S → C [Play] Light Update	
+59	S → C [Play] Light Update	
+60	S → C [Play] Light Update	
+61	S → C [Play] Light Update	
+62	S → C [Play] Light Update	
+63	S → C [Play] Light Update	
+64	S → C [Play] Light Update	
+65	S → C [Play] Light Update	
+66	S → C [Play] Light Update	
+67	S → C [Play] Light Update	
+68	S → C [Play] Light Update	
+69	S → C [Play] Light Update	
+70	S → C [Play] Light Update	
+71	S → C [Play] Light Update	
+72	S → C [Play] Light Update	
+73	S → C [Play] Light Update	
+74	S → C [Play] Light Update	
+75	S → C [Play] Light Update	
+76	S → C [Play] Light Update	
+77	S → C [Play] Light Update	
+78	S → C [Play] Light Update	
+79	S → C [Play] Light Update	
+80	S → C [Play] Light Update	
+81	S → C [Play] Light Update	
+82	S → C [Play] Light Update	
+83	S → C [Play] Light Update	
+84	S → C [Play] Light Update	
+85	S → C [Play] Light Update	
+86	S → C [Play] Light Update	
+87	S → C [Play] Light Update	
+88	S → C [Play] Light Update	
+89	S → C [Play] Light Update	
+90	S → C [Play] Light Update	
+91	S → C [Play] Light Update	
+92	S → C [Play] Light Update	
+93	S → C [Play] Light Update	
+94	S → C [Play] Light Update	
+95	S → C [Play] Light Update	
+96	S → C [Play] Light Update	
+97	S → C [Play] Light Update	
+98	S → C [Play] Light Update	
+99	S → C [Play] Light Update	
+100	S → C [Play] Light Update	

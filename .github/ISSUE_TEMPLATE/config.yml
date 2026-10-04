@@ -1,5 +1,8 @@
 blank_issues_enabled: true
 contact_links:
-  - name: Discord Server
+  - name: Security vulnerability
+    url: https://github.com/dioxtra/SniffCraft-Wireshark/security/advisories/new
+    about: Report security problems privately instead of opening an issue
+  - name: SniffCraft and Botcraft Discord (upstream)
     url: https://discord.gg/wECVsTbjA9
-    about: Community Discord server for Botcraft and SniffCraft projects
+    about: Community of the original SniffCraft and Botcraft projects, for questions that are not about the Wireshark integration

@@ -11,6 +11,15 @@
 --
 -- Install: copy this file and the minecraft_mcdata folder to the personal Lua plugins
 -- folder (Help > About Wireshark > Folders), e.g. %APPDATA%\Wireshark\plugins
+--
+-- Needs Wireshark 4.4 or newer (Lua 5.3+ integers and bitwise operators)
+
+set_plugin_info({
+    version = "1.0.0",
+    description = "Minecraft Java protocol dissector (minecraft-data definitions)",
+    author = "SniffCraft-Wireshark contributors",
+    repository = "https://github.com/dioxtra/SniffCraft-Wireshark",
+})
 
 local minecraft = Proto("minecraft", "Minecraft Java")
 
@@ -38,6 +47,7 @@ pf.protocol_version = ProtoField.uint32("minecraft.protocol_version", "Protocol 
 pf.definition = ProtoField.string("minecraft.definition", "Definition")
 pf.field = ProtoField.string("minecraft.field", "Field")
 pf.field_path = ProtoField.string("minecraft.field.path", "Field path")
+pf.summary = ProtoField.string("minecraft.summary", "Summary")
 pf.data = ProtoField.bytes("minecraft.data", "Data")
 
 local ef = {
@@ -71,8 +81,14 @@ local function load_index()
     if index == nil then
         local chunk = loadfile(data_dir .. "index.mcdata")
         index = chunk and chunk() or { protocols = {} }
+        index.versions = index.versions or {}
     end
     return index
+end
+
+-- "1.21.9 - 1.21.10" for protocol 773, nil if unknown
+local function version_name(protocol_version)
+    return load_index().versions[protocol_version]
 end
 
 local function newest_protocol()
@@ -710,12 +726,14 @@ local nbt_type_names = {
     [8] = "string", [9] = "list", [10] = "compound", [11] = "int array", [12] = "long array",
 }
 
+-- Returns the value: number, string, table for lists and compounds, element count for arrays
 local function nbt_payload(r, tag, name, tree, path)
     r.depth = r.depth + 1
     if r.depth > MAX_DEPTH then
         error("NBT nesting too deep", 0)
     end
     local start = r.pos
+    local value
     if tag >= 1 and tag <= 6 then
         local sizes = { 1, 2, 4, 8, 4, 8 }
         local size = sizes[tag]
@@ -723,11 +741,15 @@ local function nbt_payload(r, tag, name, tree, path)
         local range = r.tvb(start, size)
         local text
         if tag == 5 or tag == 6 then
-            text = format_float(range:float(), 7)
+            value = range:float()
+            text = format_float(value, 7)
         elseif tag == 4 then
-            text = tostring(range:int64())
+            local long = range:int64()
+            value = long:tonumber()
+            text = tostring(long)
         else
-            text = tostring(range:int())
+            value = range:int()
+            text = tostring(value)
         end
         r.pos = r.pos + size
         r:add(tree, name, path, start, text)
@@ -739,13 +761,14 @@ local function nbt_payload(r, tag, name, tree, path)
         check_count(r, count)
         r:need(count * element_size)
         r.pos = r.pos + count * element_size
+        value = count
         r:add(tree, name, path, start, string.format("%s [%d]", nbt_type_names[tag], count))
     elseif tag == 8 then
         r:need(2)
         local size = r.tvb(r.pos, 2):uint()
         r.pos = r.pos + 2
         r:need(size)
-        local value = size > 0 and r.tvb(r.pos, size):string(ENC_UTF_8) or ""
+        value = size > 0 and r.tvb(r.pos, size):string(ENC_UTF_8) or ""
         r.pos = r.pos + size
         r:add(tree, name, path, start, display_string(value))
     elseif tag == 9 then
@@ -755,14 +778,16 @@ local function nbt_payload(r, tag, name, tree, path)
         r.pos = r.pos + 5
         check_count(r, count)
         local item = r:open(tree, name, path)
+        value = {}
         for i = 1, count do
             local element_name = "[" .. (i - 1) .. "]"
-            nbt_payload(r, element_tag, element_name, i <= MAX_TREE_ELEMENTS and item or nil, path .. element_name)
+            value[i] = nbt_payload(r, element_tag, element_name, i <= MAX_TREE_ELEMENTS and item or nil, path .. element_name)
         end
         r:close(item, start, string.format("%s (list of %d %s)", name, count, nbt_type_names[element_tag] or "end"))
     elseif tag == 10 then
         local item = r:open(tree, name, path)
         local entries = 0
+        value = {}
         while true do
             local child_tag = r:u8()
             if child_tag == 0 then
@@ -774,7 +799,7 @@ local function nbt_payload(r, tag, name, tree, path)
             r:need(size)
             local child_name = size > 0 and r.tvb(r.pos, size):string(ENC_UTF_8) or ""
             r.pos = r.pos + size
-            nbt_payload(r, child_tag, child_name, item, child_path(path, child_name))
+            value[child_name] = nbt_payload(r, child_tag, child_name, item, child_path(path, child_name))
             entries = entries + 1
         end
         r:close(item, start, string.format("%s (compound, %d entr%s)", name, entries, entries == 1 and "y" or "ies"))
@@ -782,6 +807,7 @@ local function nbt_payload(r, tag, name, tree, path)
         error("invalid NBT tag " .. tag, 0)
     end
     r.depth = r.depth - 1
+    return value
 end
 
 natives.anonymousNbt = function(r, _, name, tree, _, path)
@@ -791,8 +817,7 @@ natives.anonymousNbt = function(r, _, name, tree, _, path)
         r:add(tree, name, path, start, "(empty NBT)")
         return nil
     end
-    nbt_payload(r, tag, name or "nbt", tree, path)
-    return true
+    return nbt_payload(r, tag, name or "nbt", tree, path)
 end
 
 -- NBT with a root name (before 1.20.2), a TAG_End byte means no NBT
@@ -808,8 +833,7 @@ natives.nbt = function(r, _, name, tree, _, path)
     r.pos = r.pos + 2
     r:need(root_name_size)
     r.pos = r.pos + root_name_size
-    nbt_payload(r, tag, name or "nbt", tree, path)
-    return true
+    return nbt_payload(r, tag, name or "nbt", tree, path)
 end
 
 natives.optionalNbt = natives.nbt
@@ -825,6 +849,310 @@ natives.anonOptionalNbt = function(r, args, name, tree, ctx, path)
 end
 
 ---------------------------------------------------------------------------
+-- Packet summaries (Info column and minecraft.summary)
+---------------------------------------------------------------------------
+
+local MAX_SUMMARY = 200
+
+-- Minimal JSON decoder for text components and status responses, nil if invalid
+local json_escapes = { ['"'] = '"', ["\\"] = "\\", ["/"] = "/", b = "\b", f = "\f", n = "\n", r = "\r", t = "\t" }
+
+local function json_decode(s)
+    local pos = 1
+    local value
+
+    local function skip()
+        pos = s:find("[^ \t\r\n]", pos) or #s + 1
+    end
+
+    local function decode_string()
+        pos = pos + 1
+        local parts = {}
+        while true do
+            local i = s:find('["\\]', pos)
+            if i == nil then
+                error("unterminated string", 0)
+            end
+            parts[#parts + 1] = s:sub(pos, i - 1)
+            if s:sub(i, i) == '"' then
+                pos = i + 1
+                return table.concat(parts)
+            end
+            local c = s:sub(i + 1, i + 1)
+            if c == "u" then
+                local code = tonumber(s:sub(i + 2, i + 5), 16) or 0xFFFD
+                pos = i + 6
+                if code >= 0xD800 and code <= 0xDBFF and s:sub(pos, pos + 1) == "\\u" then
+                    local low = tonumber(s:sub(pos + 2, pos + 5), 16)
+                    if low ~= nil and low >= 0xDC00 and low <= 0xDFFF then
+                        code = 0x10000 + ((code - 0xD800) << 10) + (low - 0xDC00)
+                        pos = pos + 6
+                    end
+                end
+                parts[#parts + 1] = utf8.char(code)
+            else
+                parts[#parts + 1] = json_escapes[c] or c
+                pos = i + 2
+            end
+        end
+    end
+
+    local function decode_list(close, read_element)
+        pos = pos + 1
+        skip()
+        if s:sub(pos, pos) == close then
+            pos = pos + 1
+            return
+        end
+        while true do
+            read_element()
+            skip()
+            local c = s:sub(pos, pos)
+            pos = pos + 1
+            if c == close then
+                return
+            elseif c ~= "," then
+                error("invalid json", 0)
+            end
+        end
+    end
+
+    function value()
+        skip()
+        local c = s:sub(pos, pos)
+        if c == "{" then
+            local object = {}
+            decode_list("}", function()
+                skip()
+                if s:sub(pos, pos) ~= '"' then
+                    error("invalid json key", 0)
+                end
+                local key = decode_string()
+                skip()
+                if s:sub(pos, pos) ~= ":" then
+                    error("invalid json", 0)
+                end
+                pos = pos + 1
+                object[key] = value()
+            end)
+            return object
+        elseif c == "[" then
+            local array = {}
+            decode_list("]", function()
+                array[#array + 1] = value()
+            end)
+            return array
+        elseif c == '"' then
+            return decode_string()
+        end
+        for literal, result in pairs({ ["true"] = true, ["false"] = false, ["null"] = false }) do
+            if s:sub(pos, pos + #literal - 1) == literal then
+                pos = pos + #literal
+                return result
+            end
+        end
+        local number = s:match("^-?[%d.eE+-]+", pos)
+        if number == nil then
+            error("invalid json", 0)
+        end
+        pos = pos + #number
+        return tonumber(number)
+    end
+
+    local ok, result = pcall(value)
+    return ok and result or nil
+end
+
+-- Common translation keys, the others are shown as "key [arguments]"
+local translations = {
+    ["chat.type.text"] = "<%s> %s",
+    ["chat.type.announcement"] = "[%s] %s",
+    ["chat.type.emote"] = "* %s %s",
+    ["chat.type.admin"] = "[%s: %s]",
+    ["chat.type.team.text"] = "%s <%s> %s",
+    ["chat.type.team.sent"] = "-> %s <%s> %s",
+    ["chat.type.advancement.task"] = "%s has made the advancement %s",
+    ["chat.type.advancement.challenge"] = "%s has completed the challenge %s",
+    ["chat.type.advancement.goal"] = "%s has reached the goal %s",
+    ["commands.message.display.incoming"] = "%s whispers to you: %s",
+    ["commands.message.display.outgoing"] = "You whisper to %s: %s",
+    ["multiplayer.player.joined"] = "%s joined the game",
+    ["multiplayer.player.joined.renamed"] = "%s (formerly known as %s) joined the game",
+    ["multiplayer.player.left"] = "%s left the game",
+    ["multiplayer.disconnect.kicked"] = "Kicked by an operator",
+    ["multiplayer.disconnect.server_shutdown"] = "Server closed",
+    ["multiplayer.disconnect.duplicate_login"] = "You logged in from another location",
+    ["multiplayer.disconnect.not_whitelisted"] = "You are not whitelisted on this server!",
+    ["multiplayer.disconnect.server_full"] = "Server is full!",
+    ["multiplayer.disconnect.outdated_client"] = "Incompatible client! Please use %s",
+    ["multiplayer.disconnect.idling"] = "You have been idle for too long!",
+    ["disconnect.timeout"] = "Timed out",
+}
+
+local component_text
+
+local function format_translation(format, args)
+    local next_arg = 0
+    return (format:gsub("%%(%d*)%$?s", function(position)
+        next_arg = next_arg + 1
+        return args[tonumber(position) or next_arg] or ""
+    end))
+end
+
+-- Plain text of a chat component (json decoded or NBT)
+function component_text(component, depth)
+    depth = depth or 0
+    if depth > 16 then
+        return ""
+    end
+    if type(component) == "string" then
+        return component
+    elseif type(component) == "number" then
+        return tostring(component)
+    elseif type(component) ~= "table" then
+        return ""
+    end
+    local parts = {}
+    if component[1] ~= nil and component.text == nil and component.translate == nil then
+        -- List of components
+        for _, child in ipairs(component) do
+            parts[#parts + 1] = component_text(child, depth + 1)
+        end
+        return table.concat(parts)
+    end
+    parts[1] = component.text or component[""] or ""
+    if type(component.translate) == "string" then
+        local args = {}
+        if type(component.with) == "table" then
+            for i, arg in ipairs(component.with) do
+                args[i] = component_text(arg, depth + 1)
+            end
+        end
+        local format = translations[component.translate] or component.fallback
+        if type(format) == "string" then
+            parts[#parts + 1] = format_translation(format, args)
+        else
+            parts[#parts + 1] = component.translate .. (#args > 0 and (" [" .. table.concat(args, ", ") .. "]") or "")
+        end
+    end
+    if type(component.extra) == "table" then
+        for _, child in ipairs(component.extra) do
+            parts[#parts + 1] = component_text(child, depth + 1)
+        end
+    end
+    return table.concat(parts)
+end
+
+-- Text of a component sent as json (before 1.20.3 and in the login state) or as NBT
+local function text_of(value)
+    if type(value) == "string" then
+        local first = value:sub(1, 1)
+        if first == "{" or first == "[" or first == '"' then
+            local decoded = json_decode(value)
+            if decoded ~= nil then
+                return component_text(decoded)
+            end
+        end
+        return value
+    end
+    return component_text(value)
+end
+
+local function position_text(x, y, z)
+    if type(x) ~= "number" or type(y) ~= "number" or type(z) ~= "number" then
+        return nil
+    end
+    return string.format("%s %s %s", format_float(x, 7), format_float(y, 7), format_float(z, 7))
+end
+
+local next_states = { [1] = "status", [2] = "login", [3] = "transfer" }
+
+-- Packet name -> function(values) returning a short description
+local summarizers = {}
+
+summarizers.set_protocol = function(v)
+    local version = version_name(v.protocolVersion)
+    return string.format("protocol %s%s, %s:%s, %s", tostring(v.protocolVersion), version and (" (" .. version .. ")") or "",
+        tostring(v.serverHost):gsub("%z.*", ""), tostring(v.serverPort), next_states[v.nextState] or tostring(v.nextState))
+end
+summarizers.login_start = function(v) return v.username end
+summarizers.success = function(v) return v.username end
+summarizers.compress = function(v) return "threshold " .. tostring(v.threshold) end
+summarizers.disconnect = function(v) return text_of(v.reason) end
+summarizers.kick_disconnect = summarizers.disconnect
+summarizers.system_chat = function(v)
+    return text_of(v.content) .. ((v.isActionBar or v.overlay) and " [action bar]" or "")
+end
+summarizers.chat = function(v) return text_of(v.message) end
+summarizers.chat_message = function(v) return v.message end
+summarizers.chat_command = function(v) return "/" .. tostring(v.command) end
+summarizers.chat_command_signed = summarizers.chat_command
+summarizers.player_chat = function(v)
+    local message = v.plainMessage
+    if v.unsignedChatContent ~= nil then
+        message = text_of(v.unsignedChatContent)
+    elseif message == nil and v.signedChatContent ~= nil then
+        message = text_of(v.signedChatContent)
+    end
+    if v.networkName ~= nil then
+        return "<" .. text_of(v.networkName) .. "> " .. tostring(message or "")
+    end
+    return message
+end
+summarizers.profileless_chat = function(v)
+    return "<" .. text_of(v.name) .. "> " .. text_of(v.message)
+end
+summarizers.disguised_chat = summarizers.profileless_chat
+summarizers.set_title_text = function(v) return text_of(v.text) end
+summarizers.set_title_subtitle = summarizers.set_title_text
+summarizers.action_bar = summarizers.set_title_text
+summarizers.custom_payload = function(v) return v.channel end
+summarizers.transfer = function(v) return tostring(v.host) .. ":" .. tostring(v.port) end
+summarizers.server_info = function(v)
+    local status = type(v.response) == "string" and json_decode(v.response)
+    if type(status) ~= "table" then
+        return nil
+    end
+    local parts = {}
+    if type(status.version) == "table" then
+        parts[#parts + 1] = tostring(status.version.name)
+    end
+    if type(status.players) == "table" then
+        parts[#parts + 1] = string.format("%s/%s players", tostring(status.players.online), tostring(status.players.max))
+    end
+    if status.description ~= nil then
+        parts[#parts + 1] = text_of(status.description)
+    end
+    return table.concat(parts, ", ")
+end
+
+local function summarize(name, values)
+    if type(values) ~= "table" then
+        return nil
+    end
+    local summarizer = summarizers[name]
+    local ok, summary = true, nil
+    if summarizer ~= nil then
+        ok, summary = pcall(summarizer, values)
+    else
+        -- Coordinates of entity and block related packets
+        summary = position_text(values.x, values.y, values.z)
+        if summary == nil and type(values.location) == "table" then
+            summary = position_text(values.location.x, values.location.y, values.location.z)
+        end
+    end
+    if not ok or type(summary) ~= "string" or summary == "" then
+        return nil
+    end
+    -- Formatting codes and line breaks
+    summary = summary:gsub("\194\167.", ""):gsub("[\r\n]+", " ")
+    if #summary > MAX_SUMMARY then
+        summary = summary:sub(1, MAX_SUMMARY) .. "..."
+    end
+    return summary
+end
+
+---------------------------------------------------------------------------
 -- Packet parsing
 ---------------------------------------------------------------------------
 
@@ -832,8 +1160,10 @@ end
 local minecraft_native = {}
 _G.minecraft_native = minecraft_native
 
+minecraft_native.version_name = version_name
+
 -- Parse one uncompressed packet (packet id + content)
--- Returns the packet name (nil if unknown) and the parsed values
+-- Returns the packet name (nil if unknown), the parsed values and a short summary (nil if none)
 function minecraft_native.dissect_packet(tvb, pinfo, tree, protocol_version, state, clientbound)
     local subtree = tree:add(minecraft, tvb(), "Minecraft (minecraft-data)")
     local definition, used_version, definition_name = get_definition(protocol_version)
@@ -884,7 +1214,11 @@ function minecraft_native.dissect_packet(tvb, pinfo, tree, protocol_version, sta
         subtree:add(pf.data, tvb(r.pos, r.len - r.pos))
             :add_proto_expert_info(ef.leftover, string.format("%d byte(s) not covered by the definition", r.len - r.pos))
     end
-    return name, values
+    local summary = ok and summarize(name, values) or nil
+    if summary ~= nil then
+        subtree:add(pf.summary, summary):set_generated()
+    end
+    return name, values, summary
 end
 
 ---------------------------------------------------------------------------
@@ -979,7 +1313,8 @@ local function dissect_pdu(tvb, pinfo, tree, conn, key, clientbound, info)
     subtree:add(pf.state, snapshot.state):set_generated()
     subtree:add(pf.direction, clientbound and "clientbound" or "serverbound"):set_generated()
     subtree:add(pf.protocol_version, snapshot.protocol):set_generated()
-    if not snapshot.handshake_seen then
+    -- (unless this packet is the handshake)
+    if not snapshot.handshake_seen and not (snapshot.state == STATE_HANDSHAKE and not clientbound) then
         subtree:add_proto_expert_info(ef.no_handshake)
     end
 
@@ -1009,7 +1344,7 @@ local function dissect_pdu(tvb, pinfo, tree, conn, key, clientbound, info)
         return
     end
 
-    local name, values
+    local name, values, summary
     if snapshot.state == STATE_HANDSHAKE and not clientbound then
         local body_tvb = body:tvb()
         local protocol, next_state = parse_handshake(body_tvb)
@@ -1018,15 +1353,15 @@ local function dissect_pdu(tvb, pinfo, tree, conn, key, clientbound, info)
             conn.handshake_seen = true
             conn.state = next_state == 1 and STATE_STATUS or STATE_LOGIN
         end
-        name, values = minecraft_native.dissect_packet(body_tvb, pinfo, subtree, protocol or snapshot.protocol, STATE_HANDSHAKE, false)
+        name, values, summary = minecraft_native.dissect_packet(body_tvb, pinfo, subtree, protocol or snapshot.protocol, STATE_HANDSHAKE, false)
     else
-        name, values = minecraft_native.dissect_packet(body:tvb(), pinfo, subtree, snapshot.protocol, snapshot.state, clientbound)
+        name, values, summary = minecraft_native.dissect_packet(body:tvb(), pinfo, subtree, snapshot.protocol, snapshot.state, clientbound)
         if first_pass and name ~= nil then
             update_connection(conn, name, values or {}, clientbound)
         end
     end
     subtree:set_text(string.format("Minecraft %s (%s)", name or "packet", state_names[snapshot.state]))
-    info[#info + 1] = name or "?"
+    info[#info + 1] = (name or "?") .. (summary and (": " .. summary) or "")
 end
 
 function minecraft.dissector(tvb, pinfo, tree)

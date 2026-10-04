@@ -23,6 +23,7 @@ const std::string Conf::raw_bytes_log_key = "LogRawBytes";
 const std::string Conf::pcapng_log_key = "LogToPcapng";
 const std::string Conf::pcapng_json_key = "PcapngIncludeJson";
 const std::string Conf::pcapng_respect_filters_key = "PcapngRespectFilters";
+const std::string Conf::disconnect_on_version_mismatch_key = "DisconnectOnVersionMismatch";
 const std::string Conf::online_key = "Online";
 const std::string Conf::network_recap_to_console_key = "NetworkRecapToConsole";
 const std::string Conf::account_cache_key_key = "MicrosoftAccountCacheKey";
@@ -89,6 +90,8 @@ ProtocolCraft::Json::Value Conf::LoadConf()
         json[pcapng_json_key] = false;
     if (!json.contains(pcapng_respect_filters_key))
         json[pcapng_respect_filters_key] = false;
+    if (!json.contains(disconnect_on_version_mismatch_key))
+        json[disconnect_on_version_mismatch_key] = false;
     if (!json.contains(online_key))
         json[online_key] = false;
     if (!json.contains(account_cache_key_key))

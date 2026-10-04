@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 /// @brief Wireshark extcap interface. When SniffCraft is placed in Wireshark extcap folder,
 /// it shows up as a capture interface that runs the proxy and streams the packets to Wireshark.
 /// See https://www.wireshark.org/docs/wsdg_html_chunked/ChCaptureExtcap.html
@@ -11,4 +13,7 @@ namespace Extcap
     /// @brief Answer Wireshark extcap queries or run a capture
     /// @return Process exit code
     int Run(const int argc, char* argv[]);
+
+    /// @brief "1.21.9 - 1.21.10" for all the game versions using this protocol version, "?" if unknown
+    std::string GetGameVersionRange(const int protocol_version);
 }

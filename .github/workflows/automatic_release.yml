@@ -10,7 +10,13 @@ on:
       - 'README.md'
       - '.gitignore'
       - 'LICENSE'
+      - 'SECURITY.md'
       - 'docs/**'
+      - 'tests/**'
+      - '.github/ISSUE_TEMPLATE/**'
+      - '.github/dependabot.yml'
+      - '.github/workflows/tests.yml'
+      - '.github/workflows/watch_upstream.yml'
 
 # Builds only need to read the repository, the release job gets more below
 permissions:
@@ -69,13 +75,17 @@ jobs:
       artifact_suffix: -${{ matrix.version }}
 
 
+  tests:
+    uses: ./.github/workflows/tests.yml
+
   release:
     runs-on: ubuntu-latest
     needs:
       - build_os_matrix
       - build_versions
+      - tests
     # A failed build for an old version shouldn't block the release, the bundles just won't have it
-    if: ${{ !cancelled() && needs.build_os_matrix.result == 'success' }}
+    if: ${{ !cancelled() && needs.build_os_matrix.result == 'success' && needs.tests.result == 'success' }}
     permissions:
       # Publish the release
       contents: write
@@ -133,7 +143,7 @@ jobs:
             echo -en '\n' >> release_note.txt
             echo "Examples of conf files can be found [here](https://github.com/${{ github.repository }}/tree/master/conf)." >> release_note.txt
             echo -en '\n' >> release_note.txt
-            echo "Wireshark: sniffcraft-wireshark-windows.zip and sniffcraft-wireshark-linux.zip contain SniffCraft for many Minecraft versions and the dissectors (sniffcraft-wireshark.zip only has the dissectors), see the [Wireshark section](https://github.com/${{ github.repository }}#wireshark) of the README." >> release_note.txt
+            echo "Wireshark: sniffcraft-wireshark-windows.zip and sniffcraft-wireshark-linux.zip contain SniffCraft for many Minecraft versions, the dissectors and the Minecraft profile, install them with install.ps1 or install.sh (sniffcraft-wireshark.zip only has the dissectors and the profile). See the [quick start](https://github.com/${{ github.repository }}#quick-start), the dissectors need Wireshark 4.4 or newer." >> release_note.txt
             echo -en '\n' >> release_note.txt
             echo "🔒 SHA256SUMS.txt lists the checksum of every file, and each one has a build provenance attestation proving it was built by this workflow from this repository: \`gh attestation verify <file> -R ${{ github.repository }}\`" >> release_note.txt
             echo -en '\n' >> release_note.txt
@@ -155,8 +165,8 @@ jobs:
               [ -d "$dir" ] || continue
               cp $dir/sniffcraft$suffix $bundle/sniffcraft_versions/sniffcraft-${dir##*-}$suffix
             done
-            cp -r wireshark/sniffcraft.lua wireshark/minecraft.lua wireshark/minecraft_mcdata wireshark/install.ps1 $bundle/
-            chmod +x $bundle/sniffcraft$suffix $bundle/sniffcraft_versions/*
+            cp -r wireshark/sniffcraft.lua wireshark/minecraft.lua wireshark/minecraft_mcdata wireshark/profiles wireshark/install.ps1 wireshark/install.sh $bundle/
+            chmod +x $bundle/sniffcraft$suffix $bundle/sniffcraft_versions/* $bundle/install.sh
             (cd $bundle && zip -r ../sniffcraft-wireshark-$os.zip .)
           done
 
@@ -167,7 +177,9 @@ jobs:
           mv macos/sniffcraft sniffcraft-macos-${{ steps.mc-version.outputs.version }}
       - name: Package Wireshark dissectors
         working-directory: wireshark
-        run: zip -r ../sniffcraft-wireshark.zip sniffcraft.lua minecraft.lua minecraft_mcdata install.ps1
+        run: |
+          chmod +x install.sh
+          zip -r ../sniffcraft-wireshark.zip sniffcraft.lua minecraft.lua minecraft_mcdata profiles install.ps1 install.sh
 
       - name: Compute checksums
         run: >

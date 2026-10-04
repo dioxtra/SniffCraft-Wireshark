@@ -1,0 +1,521 @@
+4	C → S [Handshake] set_protocol: protocol 773 (1.21.9 - 1.21.10), localhost:25555, login	
+9	C → S [Handshake] set_protocol: protocol 773 (1.21.9 - 1.21.10), 127.0.0.1:25565, login	
+11	C → S [Login] login_start: SniffBot	
+13	C → S [Login] login_start: SniffBot	
+15	S → C [Login] compress: threshold 256	
+17	S → C [Login] compress: threshold 256	
+19	S → C [Login] success: SniffBot	
+21	S → C [Login] success: SniffBot	
+23	C → S [Login] login_acknowledged	
+25	C → S [Configuration] custom_payload: minecraft:brand	
+26	C → S [Login] login_acknowledged	
+29	S → C [Configuration] custom_payload: minecraft:brand	
+31	C → S [Configuration] custom_payload: minecraft:brand	
+33	S → C [Configuration] feature_flags	
+35	S → C [Configuration] select_known_packs	
+37	S → C [Configuration] custom_payload: minecraft:brand	
+39	S → C [Configuration] feature_flags	
+41	S → C [Configuration] select_known_packs	
+43	C → S [Configuration] select_known_packs	
+45	C → S [Configuration] select_known_packs	
+47	S → C [Configuration] registry_data	
+49	S → C [Configuration] registry_data	
+51	S → C [Configuration] registry_data	
+53	S → C [Configuration] registry_data	
+55	S → C [Configuration] registry_data	
+57	S → C [Configuration] registry_data	
+59	S → C [Configuration] registry_data	
+61	S → C [Configuration] registry_data	
+63	S → C [Configuration] registry_data	
+65	S → C [Configuration] registry_data	
+67	S → C [Configuration] registry_data	
+69	S → C [Configuration] registry_data	
+71	S → C [Configuration] registry_data	
+73	S → C [Configuration] registry_data	
+75	S → C [Configuration] registry_data	
+77	S → C [Configuration] registry_data	
+79	S → C [Configuration] registry_data	
+80	S → C [Configuration] registry_data	
+83	S → C [Configuration] registry_data	
+85	S → C [Configuration] registry_data	
+87	S → C [Configuration] registry_data	
+88	S → C [Configuration] registry_data	
+91	S → C [Configuration] registry_data	
+92	S → C [Configuration] registry_data	
+95	S → C [Configuration] registry_data	
+97	S → C [Configuration] registry_data	
+99	S → C [Configuration] registry_data	
+101	S → C [Configuration] registry_data	
+103	S → C [Configuration] registry_data	
+105	S → C [Configuration] registry_data	
+107	S → C [Configuration] registry_data	
+109	S → C [Configuration] registry_data	
+111	S → C [Configuration] registry_data	
+113	S → C [Configuration] registry_data	
+115	S → C [Configuration] registry_data	
+117	S → C [Configuration] registry_data	
+119	S → C [Configuration] tags	
+121	S → C [Configuration] registry_data	
+123	S → C [Configuration] registry_data	
+125	S → C [Configuration] registry_data	
+127	S → C [Configuration] registry_data	
+129	S → C [Configuration] registry_data	
+131	S → C [Configuration] registry_data	
+133	S → C [Configuration] tags	
+135	S → C [Configuration] finish_configuration	
+137	S → C [Configuration] finish_configuration	
+139	C → S [Configuration] finish_configuration	
+141	C → S [Configuration] finish_configuration	
+143	S → C [Play] login	
+145	S → C [Play] difficulty	
+147	S → C [Play] abilities	
+149	S → C [Play] held_item_slot	
+151	S → C [Play] declare_recipes	
+153	S → C [Play] entity_status	
+155	S → C [Play] declare_commands	
+157	S → C [Play] recipe_book_settings	
+159	S → C [Play] recipe_book_add	
+161	S → C [Play] position: 6.5 -60 4.5	
+163	S → C [Play] server_data	
+165	S → C [Play] player_info	
+167	S → C [Play] player_info	
+169	S → C [Play] initialize_world_border	
+171	S → C [Play] update_time	
+173	S → C [Play] login	
+175	S → C [Play] spawn_position	
+177	S → C [Play] difficulty	
+179	S → C [Play] abilities	
+181	S → C [Play] held_item_slot	
+183	S → C [Play] game_state_change	
+185	S → C [Play] set_ticking_state	
+187	S → C [Play] step_tick	
+189	S → C [Play] update_view_position	
+191	S → C [Play] window_items	
+193	S → C [Play] declare_recipes	
+195	S → C [Play] entity_status	
+197	S → C [Play] declare_commands	
+199	S → C [Play] recipe_book_settings	
+201	S → C [Play] recipe_book_add	
+203	S → C [Play] position: 6.5 -60 4.5	
+205	C → S [Play] teleport_confirm	
+207	C → S [Play] player_loaded	
+209	C → S [Play] chat_command: /help	
+211	S → C [Play] server_data	
+213	S → C [Play] player_info	
+215	S → C [Play] player_info	
+217	S → C [Play] initialize_world_border	
+219	S → C [Play] update_time	
+221	S → C [Play] spawn_position	
+223	S → C [Play] game_state_change	
+225	S → C [Play] set_ticking_state	
+227	S → C [Play] step_tick	
+228	C → S [Play] teleport_confirm	
+231	S → C [Play] update_view_position	
+232	C → S [Play] player_loaded	
+235	C → S [Play] chat_command: /help	
+236	S → C [Play] window_items	
+239	S → C [Play] entity_metadata, entity_update_attributes, advancements, update_health, experience	
+241	S → C [Play] entity_metadata	
+243	S → C [Play] entity_update_attributes	
+245	S → C [Play] advancements	
+247	S → C [Play] update_health	
+249	S → C [Play] experience	
+251	S → C [Play] chunk_batch_start, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, ... (11 packets)	
+253	S → C [Play] system_chat: /me <action>	
+255	S → C [Play] system_chat: /help [<command>]	
+257	S → C [Play] chunk_batch_start	
+259	S → C [Play] map_chunk	
+261	S → C [Play] map_chunk	
+263	S → C [Play] system_chat: /list [uuids]	
+264	S → C [Play] map_chunk	
+267	S → C [Play] system_chat: /msg <targets> <message>	
+269	S → C [Play] system_chat: /tell -> msg	
+271	S → C [Play] system_chat: /w -> msg	
+273	S → C [Play] system_chat: /random (value|roll)	
+275	S → C [Play] system_chat: /teammsg <message>	
+277	S → C [Play] system_chat: /tm -> teammsg	
+279	S → C [Play] system_chat: /trigger <objective> [add|set]	
+281	S → C [Play] map_chunk	
+283	S → C [Play] map_chunk	
+285	S → C [Play] map_chunk	
+287	S → C [Play] map_chunk	
+289	S → C [Play] map_chunk	
+291	S → C [Play] map_chunk	
+293	S → C [Play] chunk_batch_finished	
+295	S → C [Play] system_chat: /me <action>	
+296	C → S [Play] chunk_batch_received	
+297	S → C [Play] system_chat: /help [<command>]	
+298	S → C [Play] system_chat: /list [uuids]	
+301	C → S [Play] chunk_batch_received	
+302	S → C [Play] system_chat: /msg <targets> <message>	
+305	S → C [Play] system_chat: /tell -> msg	
+307	S → C [Play] system_chat: /w -> msg	
+309	S → C [Play] system_chat: /random (value|roll)	
+311	S → C [Play] system_chat: /teammsg <message>	
+313	S → C [Play] system_chat: /tm -> teammsg	
+315	S → C [Play] system_chat: /trigger <objective> [add|set]	
+317	S → C [Play] chunk_batch_start, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, ... (16 packets)	
+319	S → C [Play] map_chunk, chunk_batch_finished	
+321	S → C [Play] chunk_batch_start	
+323	S → C [Play] map_chunk	
+325	S → C [Play] map_chunk	
+327	S → C [Play] map_chunk	
+329	S → C [Play] map_chunk	
+331	S → C [Play] map_chunk	
+333	S → C [Play] map_chunk	
+335	S → C [Play] map_chunk	
+337	S → C [Play] map_chunk	
+339	S → C [Play] map_chunk	
+341	S → C [Play] map_chunk	
+343	S → C [Play] map_chunk	
+345	S → C [Play] map_chunk	
+347	S → C [Play] map_chunk	
+349	S → C [Play] map_chunk	
+351	S → C [Play] map_chunk	
+353	S → C [Play] map_chunk	
+355	S → C [Play] chunk_batch_finished	
+357	C → S [Play] chunk_batch_received	
+359	C → S [Play] chunk_batch_received	
+361	S → C [Play] chunk_batch_start, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, ... (16 packets)	
+363	S → C [Play] map_chunk, map_chunk, map_chunk, map_chunk, map_chunk, chunk_batch_finished	
+365	S → C [Play] chunk_batch_start	
+367	S → C [Play] map_chunk	
+369	S → C [Play] map_chunk	
+371	S → C [Play] map_chunk	
+373	S → C [Play] map_chunk	
+375	S → C [Play] map_chunk	
+377	S → C [Play] map_chunk	
+379	S → C [Play] map_chunk	
+381	S → C [Play] map_chunk	
+383	S → C [Play] map_chunk	
+385	S → C [Play] map_chunk	
+387	S → C [Play] map_chunk	
+389	S → C [Play] map_chunk	
+391	S → C [Play] map_chunk	
+393	S → C [Play] map_chunk	
+395	S → C [Play] map_chunk	
+397	S → C [Play] map_chunk	
+399	S → C [Play] map_chunk	
+401	S → C [Play] map_chunk	
+403	S → C [Play] map_chunk	
+405	S → C [Play] map_chunk	
+407	S → C [Play] chunk_batch_finished	
+409	C → S [Play] chunk_batch_received	
+411	C → S [Play] chunk_batch_received	
+413	S → C [Play] chunk_batch_start, map_chunk, map_chunk, map_chunk, map_chunk, chunk_batch_finished	
+415	S → C [Play] chunk_batch_start	
+417	S → C [Play] map_chunk	
+419	S → C [Play] map_chunk	
+421	S → C [Play] map_chunk	
+423	S → C [Play] map_chunk	
+425	S → C [Play] chunk_batch_finished	
+427	C → S [Play] chunk_batch_received	
+429	C → S [Play] chunk_batch_received	
+431	S → C [Play] update_time	
+433	S → C [Play] update_time	
+435	S → C [Play] bundle_delimiter, spawn_entity: 30.5 -60 -15.5, entity_update_attributes, bundle_delimiter, rel_entity_move, entity_metadata, entity_update_attributes	
+437	S → C [Play] bundle_delimiter	
+439	S → C [Play] spawn_entity: 30.5 -60 -15.5	
+441	S → C [Play] entity_update_attributes	
+443	S → C [Play] bundle_delimiter	
+445	S → C [Play] rel_entity_move	
+447	S → C [Play] entity_metadata	
+449	S → C [Play] entity_update_attributes	
+451	S → C [Play] entity_velocity, sync_entity_position: 30.47302 -60 -15.50304, entity_head_rotation	
+453	S → C [Play] entity_velocity	
+455	S → C [Play] sync_entity_position: 30.47302 -60 -15.50304	
+457	S → C [Play] entity_head_rotation	
+459	S → C [Play] entity_velocity, sync_entity_position: 30.44475 -59.58 -15.41596, entity_head_rotation	
+461	S → C [Play] entity_velocity	
+463	S → C [Play] sync_entity_position: 30.44475 -59.58 -15.41596	
+465	S → C [Play] entity_head_rotation	
+467	S → C [Play] entity_velocity, entity_move_look, entity_head_rotation	
+469	S → C [Play] entity_velocity	
+471	S → C [Play] entity_move_look	
+473	S → C [Play] entity_head_rotation	
+475	S → C [Play] entity_velocity, rel_entity_move	
+477	S → C [Play] entity_velocity	
+479	S → C [Play] rel_entity_move	
+481	S → C [Play] update_time, bundle_delimiter, spawn_entity: 30.5 -60 -11.5, entity_metadata, entity_update_attributes, bundle_delimiter, rel_entity_move, entity_metadata, ... (9 packets)	
+483	S → C [Play] update_time	
+485	S → C [Play] bundle_delimiter	
+487	S → C [Play] spawn_entity: 30.5 -60 -11.5	
+489	S → C [Play] entity_metadata	
+491	S → C [Play] entity_update_attributes	
+493	S → C [Play] bundle_delimiter	
+495	S → C [Play] rel_entity_move	
+497	S → C [Play] entity_metadata	
+499	S → C [Play] entity_update_attributes	
+501	S → C [Play] bundle_delimiter, spawn_entity: 25.5 -60 -14.5, entity_metadata, entity_update_attributes, bundle_delimiter, entity_velocity, rel_entity_move, rel_entity_move, ... (10 packets)	
+503	S → C [Play] bundle_delimiter	
+505	S → C [Play] spawn_entity: 25.5 -60 -14.5	
+507	S → C [Play] entity_metadata	
+509	S → C [Play] entity_update_attributes	
+511	S → C [Play] bundle_delimiter	
+513	S → C [Play] entity_velocity	
+515	S → C [Play] rel_entity_move	
+517	S → C [Play] rel_entity_move	
+519	S → C [Play] entity_metadata	
+521	S → C [Play] entity_update_attributes	
+523	S → C [Play] entity_velocity, sync_entity_position: 30.51702 -60 -11.46694, entity_head_rotation	
+525	S → C [Play] entity_velocity	
+527	S → C [Play] sync_entity_position: 30.51702 -60 -11.46694	
+529	S → C [Play] entity_head_rotation	
+531	S → C [Play] entity_velocity, sync_entity_position: 30.66275 -59.58 -11.53341, entity_head_rotation	
+533	S → C [Play] entity_velocity	
+535	S → C [Play] sync_entity_position: 30.66275 -59.58 -11.53341	
+537	S → C [Play] entity_head_rotation	
+539	S → C [Play] entity_velocity, sync_entity_position: 30.36654 -60 -14.94119, entity_velocity, sync_entity_position: 25.52247 -60 -14.47037, entity_head_rotation	
+541	S → C [Play] entity_velocity	
+543	S → C [Play] sync_entity_position: 30.36654 -60 -14.94119	
+545	S → C [Play] entity_velocity	
+547	S → C [Play] sync_entity_position: 25.52247 -60 -14.47037	
+549	S → C [Play] entity_head_rotation	
+551	S → C [Play] entity_velocity, entity_move_look, entity_head_rotation, entity_velocity, sync_entity_position: 25.54933 -59.58 -14.30588, entity_head_rotation	
+553	S → C [Play] entity_velocity	
+555	S → C [Play] entity_move_look	
+557	S → C [Play] entity_head_rotation	
+559	S → C [Play] entity_velocity	
+561	S → C [Play] sync_entity_position: 25.54933 -59.58 -14.30588	
+563	S → C [Play] entity_head_rotation	
+565	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, rel_entity_move	
+567	S → C [Play] entity_velocity	
+569	S → C [Play] rel_entity_move	
+571	S → C [Play] entity_velocity	
+573	S → C [Play] rel_entity_move	
+575	S → C [Play] entity_velocity, rel_entity_move	
+577	S → C [Play] entity_velocity	
+579	S → C [Play] rel_entity_move	
+581	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, rel_entity_move	
+583	S → C [Play] entity_velocity	
+585	S → C [Play] rel_entity_move	
+587	S → C [Play] entity_velocity	
+589	S → C [Play] rel_entity_move	
+591	S → C [Play] entity_velocity, rel_entity_move	
+593	S → C [Play] entity_velocity	
+595	S → C [Play] rel_entity_move	
+597	S → C [Play] bundle_delimiter, spawn_entity: 16.5 -60 27.5, entity_metadata, entity_update_attributes, bundle_delimiter, rel_entity_move, entity_metadata, entity_update_attributes	
+599	S → C [Play] bundle_delimiter	
+601	S → C [Play] spawn_entity: 16.5 -60 27.5	
+603	S → C [Play] entity_metadata	
+605	S → C [Play] entity_update_attributes	
+607	S → C [Play] bundle_delimiter	
+609	S → C [Play] rel_entity_move	
+611	S → C [Play] entity_metadata	
+613	S → C [Play] entity_update_attributes	
+615	S → C [Play] entity_velocity, rel_entity_move	
+617	S → C [Play] entity_velocity	
+619	S → C [Play] rel_entity_move	
+621	S → C [Play] entity_velocity, sync_entity_position: 31.35362 -60 -11.93188	
+623	S → C [Play] entity_velocity	
+625	S → C [Play] sync_entity_position: 31.35362 -60 -11.93188	
+627	S → C [Play] entity_velocity, entity_move_look, entity_head_rotation	
+629	S → C [Play] entity_velocity	
+631	S → C [Play] entity_move_look	
+633	S → C [Play] entity_head_rotation	
+635	S → C [Play] entity_velocity, sync_entity_position: 25.68003 -60 -13.48039	
+637	S → C [Play] entity_velocity	
+639	S → C [Play] sync_entity_position: 25.68003 -60 -13.48039	
+641	S → C [Play] entity_velocity, rel_entity_move	
+643	S → C [Play] entity_velocity	
+645	S → C [Play] rel_entity_move	
+647	S → C [Play] entity_velocity, rel_entity_move	
+649	S → C [Play] entity_velocity	
+651	S → C [Play] rel_entity_move	
+653	S → C [Play] update_time, entity_velocity, rel_entity_move	
+655	S → C [Play] update_time	
+657	S → C [Play] entity_velocity	
+659	S → C [Play] rel_entity_move	
+661	S → C [Play] entity_velocity, rel_entity_move	
+663	S → C [Play] entity_velocity	
+665	S → C [Play] rel_entity_move	
+667	S → C [Play] entity_velocity, rel_entity_move	
+669	S → C [Play] entity_velocity	
+671	S → C [Play] rel_entity_move	
+673	S → C [Play] entity_velocity, rel_entity_move	
+675	S → C [Play] entity_velocity	
+677	S → C [Play] rel_entity_move	
+679	S → C [Play] entity_velocity, rel_entity_move	
+681	S → C [Play] entity_velocity	
+683	S → C [Play] rel_entity_move	
+685	S → C [Play] entity_velocity, sync_entity_position: 16.17558 -60 28.50426	
+687	S → C [Play] entity_velocity	
+689	S → C [Play] sync_entity_position: 16.17558 -60 28.50426	
+691	S → C [Play] entity_velocity, rel_entity_move	
+693	S → C [Play] entity_velocity	
+695	S → C [Play] rel_entity_move	
+697	S → C [Play] entity_velocity, rel_entity_move	
+699	S → C [Play] entity_velocity	
+701	S → C [Play] rel_entity_move	
+703	S → C [Play] entity_velocity, sync_entity_position: 30.38679 -59.58 -14.78215	
+705	S → C [Play] entity_velocity	
+707	S → C [Play] sync_entity_position: 30.38679 -59.58 -14.78215	
+709	S → C [Play] entity_velocity, rel_entity_move	
+711	S → C [Play] entity_velocity	
+713	S → C [Play] rel_entity_move	
+715	S → C [Play] update_time	
+717	S → C [Play] update_time	
+719	S → C [Play] entity_velocity, rel_entity_move	
+721	S → C [Play] entity_velocity	
+723	S → C [Play] rel_entity_move	
+725	S → C [Play] entity_velocity, rel_entity_move	
+727	S → C [Play] entity_velocity	
+729	S → C [Play] rel_entity_move	
+731	S → C [Play] bundle_delimiter, spawn_entity: 19.5 -60 28.5, entity_update_attributes, bundle_delimiter, entity_velocity, sync_entity_position: 30.49698 -60 -14.30495, rel_entity_move, entity_metadata, ... (9 packets)	
+733	S → C [Play] bundle_delimiter	
+735	S → C [Play] spawn_entity: 19.5 -60 28.5	
+737	S → C [Play] entity_update_attributes	
+739	S → C [Play] bundle_delimiter	
+741	S → C [Play] entity_velocity	
+743	S → C [Play] sync_entity_position: 30.49698 -60 -14.30495	
+745	S → C [Play] rel_entity_move	
+747	S → C [Play] entity_metadata	
+749	S → C [Play] entity_update_attributes	
+751	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, entity_move_look, entity_head_rotation	
+753	S → C [Play] entity_velocity	
+755	S → C [Play] rel_entity_move	
+757	S → C [Play] entity_velocity	
+759	S → C [Play] entity_move_look	
+761	S → C [Play] entity_head_rotation	
+763	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, rel_entity_move	
+765	S → C [Play] entity_velocity	
+767	S → C [Play] rel_entity_move	
+769	S → C [Play] entity_velocity	
+771	S → C [Play] rel_entity_move	
+773	S → C [Play] entity_velocity, sync_entity_position: 16.1057 -59.58 28.71192	
+775	S → C [Play] entity_velocity	
+777	S → C [Play] sync_entity_position: 16.1057 -59.58 28.71192	
+779	S → C [Play] entity_velocity, rel_entity_move	
+781	S → C [Play] entity_velocity	
+783	S → C [Play] rel_entity_move	
+785	S → C [Play] bundle_delimiter, spawn_entity: -24.5 -60 2.5, entity_metadata, entity_update_attributes, bundle_delimiter, rel_entity_move, entity_metadata, entity_update_attributes, ... (10 packets)	
+787	S → C [Play] bundle_delimiter	
+789	S → C [Play] spawn_entity: -24.5 -60 2.5	
+791	S → C [Play] entity_metadata	
+793	S → C [Play] entity_update_attributes	
+795	S → C [Play] bundle_delimiter	
+797	S → C [Play] rel_entity_move	
+799	S → C [Play] entity_metadata	
+801	S → C [Play] entity_update_attributes	
+803	S → C [Play] entity_velocity	
+805	S → C [Play] rel_entity_move	
+807	S → C [Play] entity_velocity, rel_entity_move	
+809	S → C [Play] entity_velocity	
+811	S → C [Play] rel_entity_move	
+813	S → C [Play] entity_velocity, sync_entity_position: -24.5364 -60 2.497226, entity_head_rotation, entity_velocity, rel_entity_move	
+815	S → C [Play] entity_velocity	
+817	S → C [Play] sync_entity_position: -24.5364 -60 2.497226	
+819	S → C [Play] entity_head_rotation	
+821	S → C [Play] entity_velocity	
+823	S → C [Play] rel_entity_move	
+825	S → C [Play] update_time, rel_entity_move, entity_velocity, sync_entity_position: -24.6968 -59.58 2.450458, entity_head_rotation	
+827	S → C [Play] update_time	
+829	S → C [Play] rel_entity_move	
+831	S → C [Play] entity_velocity	
+833	S → C [Play] sync_entity_position: -24.6968 -59.58 2.450458	
+835	S → C [Play] entity_head_rotation	
+837	S → C [Play] entity_velocity, rel_entity_move	
+839	S → C [Play] entity_velocity	
+841	S → C [Play] rel_entity_move	
+843	S → C [Play] entity_look, entity_head_rotation, entity_velocity, rel_entity_move, entity_velocity, sync_entity_position: 19.17242 -60 28.00023, rel_entity_move	
+845	S → C [Play] entity_look	
+847	S → C [Play] entity_head_rotation	
+849	S → C [Play] entity_velocity	
+851	S → C [Play] rel_entity_move	
+853	S → C [Play] entity_velocity	
+855	S → C [Play] sync_entity_position: 19.17242 -60 28.00023	
+857	S → C [Play] rel_entity_move	
+859	S → C [Play] entity_velocity, rel_entity_move	
+861	S → C [Play] entity_velocity	
+863	S → C [Play] rel_entity_move	
+865	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, rel_entity_move, entity_look, entity_head_rotation	
+867	S → C [Play] entity_velocity	
+869	S → C [Play] rel_entity_move	
+871	S → C [Play] entity_velocity	
+873	S → C [Play] rel_entity_move	
+875	S → C [Play] entity_look	
+877	S → C [Play] entity_head_rotation	
+879	S → C [Play] entity_velocity, sync_entity_position: 15.80004 -60 29.55196	
+881	S → C [Play] entity_velocity	
+883	S → C [Play] sync_entity_position: 15.80004 -60 29.55196	
+885	S → C [Play] entity_velocity, rel_entity_move, entity_velocity	
+887	S → C [Play] entity_velocity	
+889	S → C [Play] rel_entity_move	
+891	S → C [Play] entity_velocity	
+893	S → C [Play] bundle_delimiter, spawn_entity: 29.5 -60 -15.5, entity_metadata, entity_update_attributes, bundle_delimiter, entity_velocity, rel_entity_move, rel_entity_move, ... (12 packets)	
+895	S → C [Play] bundle_delimiter	
+897	S → C [Play] spawn_entity: 29.5 -60 -15.5	
+899	S → C [Play] entity_metadata	
+901	S → C [Play] entity_update_attributes	
+903	S → C [Play] bundle_delimiter	
+905	S → C [Play] entity_velocity	
+907	S → C [Play] rel_entity_move	
+909	S → C [Play] rel_entity_move	
+911	S → C [Play] entity_metadata	
+913	S → C [Play] entity_update_attributes	
+915	S → C [Play] entity_velocity	
+917	S → C [Play] sync_entity_position: 25.56536 -59.58 -13.26856	
+919	S → C [Play] entity_velocity, entity_velocity, entity_move_look, entity_head_rotation, entity_velocity, sync_entity_position: -25.50006 -60 2.213786, entity_velocity, rel_entity_move	
+921	S → C [Play] entity_velocity	
+923	S → C [Play] entity_velocity	
+925	S → C [Play] entity_move_look	
+927	S → C [Play] entity_head_rotation	
+929	S → C [Play] entity_velocity	
+931	S → C [Play] sync_entity_position: -25.50006 -60 2.213786	
+933	S → C [Play] entity_velocity	
+935	S → C [Play] rel_entity_move	
+937	S → C [Play] entity_velocity, sync_entity_position: 31.55002 -59.58 -12.1141	
+939	S → C [Play] entity_velocity	
+941	S → C [Play] sync_entity_position: 31.55002 -59.58 -12.1141	
+943	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, sync_entity_position: 29.34244 -60 -15.60933	
+945	S → C [Play] entity_velocity	
+947	S → C [Play] rel_entity_move	
+949	S → C [Play] entity_velocity	
+951	S → C [Play] sync_entity_position: 29.34244 -60 -15.60933	
+953	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, sync_entity_position: 29.05997 -59.58 -15.88087, entity_head_rotation, entity_velocity, rel_entity_move, entity_velocity, ... (9 packets)	
+955	S → C [Play] entity_velocity	
+957	S → C [Play] rel_entity_move	
+959	S → C [Play] entity_velocity	
+961	S → C [Play] sync_entity_position: 29.05997 -59.58 -15.88087	
+963	S → C [Play] entity_head_rotation	
+965	S → C [Play] entity_velocity	
+967	S → C [Play] rel_entity_move	
+969	S → C [Play] entity_velocity	
+971	S → C [Play] rel_entity_move	
+973	S → C [Play] entity_velocity, rel_entity_move	
+975	S → C [Play] entity_velocity	
+977	S → C [Play] rel_entity_move	
+979	S → C [Play] entity_velocity, rel_entity_move	
+981	S → C [Play] entity_velocity	
+983	S → C [Play] rel_entity_move	
+985	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, rel_entity_move, entity_velocity, rel_entity_move	
+987	S → C [Play] entity_velocity	
+989	S → C [Play] rel_entity_move	
+991	S → C [Play] entity_velocity	
+993	S → C [Play] rel_entity_move	
+995	S → C [Play] entity_velocity	
+997	S → C [Play] rel_entity_move	
+999	S → C [Play] entity_velocity, rel_entity_move	
+1001	S → C [Play] entity_velocity	
+1003	S → C [Play] rel_entity_move	
+1005	S → C [Play] entity_velocity, rel_entity_move	
+1007	S → C [Play] entity_velocity	
+1009	S → C [Play] rel_entity_move	
+1011	S → C [Play] update_time, entity_velocity, sync_entity_position: 30.56188 -59.58 -14.21313, entity_velocity, rel_entity_move	
+1013	S → C [Play] update_time	
+1015	S → C [Play] entity_velocity	
+1017	S → C [Play] sync_entity_position: 30.56188 -59.58 -14.21313	
+1019	S → C [Play] entity_velocity	
+1021	S → C [Play] rel_entity_move	
+1023	S → C [Play] entity_velocity, rel_entity_move	
+1025	S → C [Play] entity_velocity	
+1027	S → C [Play] rel_entity_move	
+1029	S → C [Play] entity_velocity, rel_entity_move	
+1031	S → C [Play] entity_velocity	
+1033	S → C [Play] rel_entity_move	
+1035	S → C [Play] entity_velocity, rel_entity_move, entity_velocity, sync_entity_position: 24.85146 -60 -12.73056	
+1037	S → C [Play] entity_velocity	
+1039	S → C [Play] rel_entity_move	
+1041	S → C [Play] entity_velocity	
+1043	S → C [Play] sync_entity_position: 24.85146 -60 -12.73056	
+1045	S → C [Play] entity_velocity, sync_entity_position: 32.11692 -60 -12.76634	

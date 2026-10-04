@@ -10,6 +10,7 @@
     "LogToPcapng": false,
     "PcapngIncludeJson": false,
     "PcapngRespectFilters": false,
+    "DisconnectOnVersionMismatch": false,
     "Online": false,
     "NetworkRecapToConsole": false,
     "MicrosoftAccountCacheKey": "",

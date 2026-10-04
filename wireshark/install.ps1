@@ -1,6 +1,7 @@
 <#
 .SYNOPSIS
-Install SniffCraft as a Wireshark capture interface (extcap) and the Minecraft dissectors, for the current user.
+Install SniffCraft as a Wireshark capture interface (extcap), the Minecraft dissectors and the Minecraft
+configuration profile, for the current user.
 
 .PARAMETER SniffcraftExe
 The sniffcraft executable to install, defaults to sniffcraft.exe next to this script or in ..\bin
@@ -66,6 +67,21 @@ if (Test-Path $mcdata) {
     }
     Copy-Item $mcdata $target -Recurse
     Write-Host "Protocol definitions: $target"
+}
+
+$profileDir = Join-Path $PSScriptRoot "profiles\Minecraft"
+if (Test-Path $profileDir) {
+    $target = Join-Path $WiresharkDir "profiles\Minecraft"
+    New-Item -ItemType Directory -Force -Path $target | Out-Null
+    foreach ($file in Get-ChildItem $profileDir -File) {
+        # Wireshark saves the capture options (server address...) in the profile preferences, keep them
+        $destination = Join-Path $target $file.Name
+        if ($file.Name -eq "preferences" -and (Test-Path $destination)) {
+            continue
+        }
+        Copy-Item $file.FullName $destination -Force
+    }
+    Write-Host "Minecraft profile: $target (Edit > Configuration Profiles)"
 }
 
 Write-Host "Done, restart Wireshark to load the changes."
